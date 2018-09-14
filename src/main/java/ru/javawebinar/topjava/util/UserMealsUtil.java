@@ -38,7 +38,7 @@ public class UserMealsUtil {
                                    meal.getDateTime(),
                                    meal.getDescription(),
                                    meal.getCalories(),
-                                   normalicColories(meals,caloriesPerDay))
+                                   normalsCalories(meals,caloriesPerDay))
                            ))
         );
                 return filterList.stream().filter(meal ->
@@ -46,7 +46,7 @@ public class UserMealsUtil {
                         .collect(Collectors.toCollection(ArrayList::new));
             }
 
-    private static boolean normalicColories(Map.Entry<Integer, List<UserMeal>> integerListEntry, int caloriesPerDay) {
+    private static boolean normalsCalories(Map.Entry<Integer, List<UserMeal>> integerListEntry, int caloriesPerDay) {
         return integerListEntry.getValue().stream().mapToInt(UserMeal::getCalories).sum() <= caloriesPerDay;
     }
 }
