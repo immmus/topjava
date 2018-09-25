@@ -22,8 +22,8 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2017, Month.MAY, 30,20,0), "Ужин", 500),
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,10,0), "Завтрак", 1000),
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,13,0), "Обед", 500),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,20,0), "Ужин", 500));
-        getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,59), 2000)
+                new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,20,0), "Ужин", 501));
+        getFilteredWithExceeded(mealList, LocalTime.of(14, 0), LocalTime.of(21,59), 2000)
         .forEach(meal -> System.out.println(meal.getDateTime()+" : "+meal.getDescription()+" --- "+meal.isExceed()));
 //        .toLocalDate();
 //        .toLocalTime();
@@ -35,21 +35,18 @@ public class UserMealsUtil {
         if (mealList.isEmpty()){
             throw new IllegalArgumentException("List is empty");
         }
-        List<UserMealWithExceed> filterList = new ArrayList<>();
-               mealList.stream().collect(Collectors.groupingBy(userMeal -> userMeal.getDateTime().toLocalDate()))
-                .values().forEach(meals ->
-                       meals.forEach(meal -> filterList.add(new UserMealWithExceed(
-                                   meal.getDateTime(),
-                                   meal.getDescription(),
-                                   meal.getCalories(),
-                                   normalsCalories(meals, caloriesPerDay))
-                           ))
-               );
-                return filterList.stream().filter(meal -> TimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime))
-                        .collect(Collectors.toCollection(ArrayList::new));
+        Map<LocalDate, Integer> mapDayCalories = mealList.stream().collect(
+                Collectors.groupingBy(userMeal ->
+                                userMeal.getDateTime().toLocalDate(),
+                                Collectors.summingInt(UserMeal::getCalories))
+        );
+                return mealList.stream().filter(
+                        meal -> TimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime))
+                        .map(meal -> new UserMealWithExceed(
+                                meal.getDateTime(),
+                                meal.getDescription(),
+                                meal.getCalories(),
+                                mapDayCalories.get(meal.getDateTime().toLocalDate()) <= caloriesPerDay
+                        )).collect(Collectors.toCollection(ArrayList::new));
             }
-
-    private static boolean normalsCalories(List<UserMeal> list, int caloriesPerDay) {
-        return list.stream().mapToInt(UserMeal::getCalories).sum() <= caloriesPerDay;
-    }
 }
