@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.memory_storage.MemoryStorage;
 import ru.javawebinar.topjava.model.Meal;
 
@@ -8,10 +10,11 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+
 public class MealRepositoryImpl implements MealRepository {
+   private static final Logger LOG = LoggerFactory.getLogger(MealRepositoryImpl.class);
     private MemoryStorage memoryStorage = MemoryStorage.getInstance();
     private AtomicLong countId = new AtomicLong(memoryStorage.getMeals().size());
-
 
     @Override
     public Collection<Meal> findAll() {

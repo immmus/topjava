@@ -8,9 +8,6 @@
 
     <version>1.0-SNAPSHOT</version>
 
-    <name>Calories Management</name>
-    <url>http://topjava.herokuapp.com/</url>
-
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +36,7 @@
 
     <dependencies>
         <!-- Logging with SLF4J & LogBack -->
+        <!--compile означает, что данная библиотека идет в war file-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -53,6 +51,7 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--runtime означает, что эта зависимость нам не нужна в процессе компиляции, но в war file она нам нужна-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -61,6 +60,7 @@
         </dependency>
 
         <!--Web-->
+        <!--provided означает, что библиотека учавствует в сборке, но в war не идет т.к. у Tomcat есть свой сервлер api, но для работы нашего приложения это api необходимо-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

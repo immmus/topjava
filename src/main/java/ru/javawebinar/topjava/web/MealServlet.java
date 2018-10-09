@@ -31,6 +31,7 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("forward mealsList");
         List<MealWithExceed> mealsList = MealsUtil
                 .getFilteredWithExceeded(repository.findAll(), LocalTime.MIN, LocalTime.MAX, 2000);
         request.setAttribute("mealsList", mealsList);
