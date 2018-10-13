@@ -45,6 +45,14 @@ public class Meal {
         return dateTime.toLocalTime();
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public boolean isNew() {
         return id == null;
     }
