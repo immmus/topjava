@@ -58,7 +58,7 @@ public class MealServlet extends HttpServlet {
             LocalDateTime date = LocalDateTime.parse(request.getParameter("dateTime"));
             String description = request.getParameter("description");
             int calories = Integer.parseInt(request.getParameter("calories"));
-            Meal meal =  new Meal(date, description, calories);
+            final Meal meal =  new Meal(date, description, calories);
             repository.create(meal);
         }
      doGet(request, resp);
