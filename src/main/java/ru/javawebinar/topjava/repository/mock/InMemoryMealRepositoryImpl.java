@@ -48,7 +48,8 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
             return Collections.emptyList();
         }
         return repository.get(userId).values().stream()
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
+                .sorted(Comparator.comparing(Meal::getDate).reversed()
+                .thenComparing(Meal::getTime))
                 .collect(Collectors.toList());
     }
 }
