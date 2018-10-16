@@ -44,10 +44,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        if(CollectionUtils.isEmpty(repository.values())) {
+        Collection<Meal> values = repository.get(userId).values();
+        if(CollectionUtils.isEmpty(values)) {
             return Collections.emptyList();
         }
-        return repository.get(userId).values().stream()
+        return values.stream()
                 .sorted(Comparator.comparing(Meal::getDate).reversed()
                 .thenComparing(Meal::getTime))
                 .collect(Collectors.toList());
