@@ -43,9 +43,9 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-//        log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if ("delete".equalsIgnoreCase(action)) {
             int id = Integer.valueOf(request.getParameter("id"));
+            log.info("Delete {}", id);
             mealRestController.delete(id);
         } else if ("edit".equalsIgnoreCase(action)) {
             String id = request.getParameter("id");
@@ -53,12 +53,14 @@ public class MealServlet extends HttpServlet {
                     LocalDateTime.parse(request.getParameter("dateTime")),
                     request.getParameter("description"),
                     Integer.parseInt(request.getParameter("calories")));
+            log.info("Update {}", meal);
             mealRestController.update(meal);
         } else if ("create".equalsIgnoreCase(action)) {
             Meal meal = new Meal(null,
                     LocalDateTime.parse(request.getParameter("dateTime")),
                     request.getParameter("description"),
                     Integer.parseInt(request.getParameter("calories")));
+            log.info("Create {}", meal);
             mealRestController.add(meal);
         }
         response.sendRedirect("meals");
@@ -76,36 +78,8 @@ public class MealServlet extends HttpServlet {
                         StringUtils.isEmpty(endDate) ? null : LocalDate.parse(endDate),
                         StringUtils.isEmpty(startTime) ? null : LocalTime.parse(startTime),
                         StringUtils.isEmpty(endTime) ? null : LocalTime.parse(endTime));
+        log.info("getAll");
         request.setAttribute("meals", meals);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
-
-       /* switch (action == null ? "all" : action) {
-            case "delete":
-                int id = getId(request);
-                log.info("Delete {}", id);
-                mealRestController.delete(id);
-                response.sendRedirect("meals");
-                break;
-            case "create":
-            case "update":
-                final Meal meal = "create".equals(action) ?
-                        new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        mealRestController.get(getId(request));
-                request.setAttribute("meal", meal);
-                request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
-                break;
-            case "all":
-            default:
-                log.info("getAll");
-                List<MealWithExceed> meals = mealRestController.getAll();
-        request.setAttribute("meals", meals);
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
-                break;
-        }*/
     }
-
-   /* private int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
-        return Integer.parseInt(paramId);
-    }*/
 }
