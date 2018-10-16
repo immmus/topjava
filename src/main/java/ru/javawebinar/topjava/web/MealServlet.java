@@ -61,7 +61,7 @@ public class MealServlet extends HttpServlet {
                     Integer.parseInt(request.getParameter("calories")));
             mealRestController.add(meal);
         }
-        doGet(request, response);
+        response.sendRedirect("meals");
     }
 
     @Override

@@ -44,7 +44,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        Collection<Meal> values = repository.get(userId).values();
+        Collection<Meal> values = repository.get(userId) == null ? null : repository.get(userId).values();
         if(CollectionUtils.isEmpty(values)) {
             return Collections.emptyList();
         }
