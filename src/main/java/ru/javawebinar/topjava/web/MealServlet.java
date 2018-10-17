@@ -68,6 +68,10 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(SecurityUtil.authUserId() == -1){
+            response.sendError(403);
+            return;
+        }
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String startTime = request.getParameter("startTime");
