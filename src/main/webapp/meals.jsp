@@ -13,15 +13,15 @@
     <form name="filter" method="get">
     <div class="form-row">
         <div class="col-auto">
-            <input class="form-control" type="time" name="startTime" <%--value="${startTime != null ? startTime : ""}"--%> placeholder="start time" />
-            <input class="form-control" type="time" name="endTime" <%--value="${endTime != null ? endTime : ""}"--%> placeholder="end time" />
+            <input class="form-control" type="time" name="startTime" value="${param.startTime}" placeholder="start time" />
+            <input class="form-control" type="time" name="endTime" value="${param.endTime}" placeholder="end time" />
         </div>
         <div class="col-auto">
-            <input class="form-control" type="date" name="startDate" <%--value="${startDate != null ? startDate : ""}" --%>placeholder="start date" />
-            <input class="form-control" type="date" name="endDate" <%--value="${endDate != null ? endDate : ""}"--%> placeholder="end date" />
+            <input class="form-control" type="date" name="startDate" value="${param.startDate}" placeholder="start date" />
+            <input class="form-control" type="date" name="endDate" value="${param.endDate}" placeholder="end date" />
         </div>
         <div class="col-auto">
-        <button class="btn btn-light" type="submit" href="">фильтр</button>
+        <button class="btn btn-light" type="submit">фильтр</button>
         </div>
     </div>
     </form>
