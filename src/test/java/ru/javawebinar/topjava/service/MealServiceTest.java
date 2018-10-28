@@ -13,6 +13,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -76,13 +77,15 @@ public class MealServiceTest {
 
     @Test
     public void getAll() throws Exception {
-        assertMatch(service.getAll(USER_ID), MEALS);
+        List<Meal> meals = service.getAll(USER_ID);
+        assertMatch(meals, MEALS);
     }
 
     @Test
     public void getBetween() throws Exception {
-        assertMatch(service.getBetweenDates(
+        List<Meal> mealList = service.getBetweenDates(
                 LocalDate.of(2015, Month.MAY, 30),
-                LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
+                LocalDate.of(2015, Month.MAY, 30), USER_ID);
+        assertMatch(mealList, MEAL3, MEAL2, MEAL1);
     }
 }
