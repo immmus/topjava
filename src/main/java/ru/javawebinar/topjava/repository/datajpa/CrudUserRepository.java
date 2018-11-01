@@ -21,7 +21,7 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
     @Override
     @Transactional
-    User save(User user);
+    <S extends User> S save(S s);
 
     @Override
     Optional<User> findById(Integer id);

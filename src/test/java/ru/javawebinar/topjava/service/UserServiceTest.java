@@ -20,6 +20,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
@@ -46,7 +47,7 @@ public class UserServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        cacheManager.getCache("users").clear();
+        Objects.requireNonNull(cacheManager.getCache("users")).clear();
     }
 
     @Test
