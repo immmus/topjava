@@ -40,6 +40,9 @@ public abstract class AbstractMealServiceTest {
 
     private static StringBuilder results = new StringBuilder();
 
+    @Autowired
+    protected MealService service;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -67,9 +70,6 @@ public abstract class AbstractMealServiceTest {
                 results +
                 "\n---------------------------------");
     }
-
-    @Autowired
-    private MealService service;
 
     @Test
     public void delete() throws Exception {

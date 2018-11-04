@@ -40,7 +40,7 @@ public abstract class AbstractUserServiceTest {
     }
 
     @Autowired
-    private UserService service;
+    protected UserService service;
 
     @Autowired
     private CacheManager cacheManager;
