@@ -5,9 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class RootController {
@@ -21,7 +23,8 @@ public class RootController {
 
     @GetMapping("/users")
     public String users(Model model) {
-        model.addAttribute("users", service.getAll());
+        List<User> all = service.getAll();
+        model.addAttribute("users", all);
         return "users";
     }
 
