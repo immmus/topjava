@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = MealRestController.REST_URL)
 public class MealRestController extends AbstractMealController {
-    static final String REST_URL = "/rest/meals";
+     static final String REST_URL = "/rest/meals";
 
     @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,9 +39,13 @@ public class MealRestController extends AbstractMealController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<Meal> createRest(@RequestBody Meal meal) {
         Optional<Meal> newMeal = Optional.of(super.create(meal));
-        return ResponseEntity.of(newMeal);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(newMeal.get().getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(newMeal.get());
     }
 
     @Override
