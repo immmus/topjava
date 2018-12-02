@@ -10,14 +10,16 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(value = MealRestController.REST_URL)
 public class MealRestController extends AbstractMealController {
-     static final String REST_URL = "/rest/meals";
+    static final String REST_URL = "/rest/meals";
 
     @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,11 +57,23 @@ public class MealRestController extends AbstractMealController {
         super.update(meal, id);
     }
 
+
     @GetMapping(value = "filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealTo> getBetweenWithLoc(
             @RequestParam(value = "startDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
             @RequestParam(value = "endDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime
     ) {
         return super.getBetween(startDateTime.toLocalDate(), startDateTime.toLocalTime(), endDateTime.toLocalDate(), endDateTime.toLocalTime());
+    }
+
+    @GetMapping(value = "filter2", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MealTo> getBetweenWithLoc(
+            @RequestParam(value = "startDate", required = false) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) LocalDate endDate,
+            @RequestParam(value = "startTime", required = false) LocalTime startTime,
+            @RequestParam(value = "endTime", required = false) LocalTime endTime
+    ) {
+
+        return super.getBetween(startDate, startTime, endDate, endTime);
     }
 }
