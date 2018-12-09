@@ -1,40 +1,33 @@
-const userAjaxUrl = "ajax/admin/users/";
+let formFilter = $("#filter");
+const mealsAjaxUrl = "ajax/profile/meals/";
 
-function updateUsers() {
-    $.get(userAjaxUrl, updateTable)
-}
-function enableOrDisable(id, check){
-    let enableOrDisable = check.is(':checked');
+function filter() {
     $.ajax({
-        url: userAjaxUrl + id,
-        type: "POST",
-        data: 'enableOrDisable=' + enableOrDisable,
-    }).done(function () {
-        successNoty(enableOrDisable ? 'Enabled' : 'Disabled')
-    })
+        type: "GET",
+        url: mealsAjaxUrl + "filter",
+        data: formFilter.serialize()
+    }).done(updateTable)
+}
+function cancelFilter(){
+    formFilter[0].reset();
+    $.get(mealsAjaxUrl, updateTable)
 }
 // $(document).ready(function () {
 $(function () {
     makeEditable({
-        ajaxUrl: userAjaxUrl,
+        ajaxUrl: mealsAjaxUrl,
         datatableApi: $("#datatable").DataTable({
             "paging": false,
             "info": true,
             "columns": [
                 {
-                    "data": "name"
+                    "data": "dateTime"
                 },
                 {
-                    "data": "email"
+                    "data": "description"
                 },
                 {
-                    "data": "roles"
-                },
-                {
-                    "data": "enabled"
-                },
-                {
-                    "data": "registered"
+                    "data": "calories"
                 },
                 {
                     "defaultContent": "Edit",
@@ -52,6 +45,6 @@ $(function () {
                 ]
             ]
         }),
-        updateTable: updateUsers
+        updateTable: filter
     });
 });

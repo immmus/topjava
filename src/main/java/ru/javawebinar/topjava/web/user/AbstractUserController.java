@@ -38,6 +38,11 @@ public abstract class AbstractUserController {
         service.delete(id);
     }
 
+    public void enableOrDisable(int id, boolean check){
+        log.info("enableOrDisable user with id={}", id);
+        service.enableOrDisable(id, check);
+    }
+
     public void update(User user, int id) {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);

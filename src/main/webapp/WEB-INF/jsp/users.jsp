@@ -35,11 +35,11 @@
                     <td><c:out value="${user.name}"/></td>
                     <td><a href="mailto:${user.email}">${user.email}</a></td>
                     <td>${user.roles}</td>
-                    <td><input type="checkbox"
-                               <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/></td>
+                    <td><input class="enableOrDisable" name="enableOrDisable" type="checkbox"
+                               <c:if test="${user.enabled}">checked</c:if> onchange="enableOrDisable(${user.id}, $(this))"/></td>
                     <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
                     <td><a><span class="fa fa-pencil"></span></a></td>
-                    <td><a class="delete" id="${user.id}"><span class="fa fa-remove"></span></a></td>
+                    <td><a class="delete" onclick="deleteRow(${user.id})"><span class="fa fa-remove"></span></a></td>
                 </tr>
             </c:forEach>
         </table>
@@ -60,19 +60,19 @@
                     <div class="form-group">
                         <label for="name" class="col-form-label"><spring:message code="user.name"/></label>
                         <input type="text" class="form-control" id="name" name="name"
-                               placeholder="<spring:message code="user.name"/>">
+                               placeholder="<spring:message code="user.name"/>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email" class="col-form-label"><spring:message code="user.email"/></label>
                         <input type="email" class="form-control" id="email" name="email"
-                               placeholder="<spring:message code="user.email"/>">
+                               placeholder="<spring:message code="user.email"/>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="password" class="col-form-label"><spring:message code="user.password"/></label>
                         <input type="password" class="form-control" id="password" name="password"
-                               placeholder="<spring:message code="user.password"/>">
+                               placeholder="<spring:message code="user.password"/>" required>
                     </div>
                 </form>
             </div>

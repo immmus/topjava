@@ -34,6 +34,7 @@ public class MealRestController extends AbstractMealController {
     @Override
     @GetMapping
     public List<MealTo> getAll() {
+
         return super.getAll();
     }
 
