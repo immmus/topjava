@@ -12,13 +12,13 @@ function makeEditable(ctx) {
 }
 
 function add() {
-    $("#modalTitle").html(i18n["addTitle"]);
+     $("#modalTitle").html(i18n["addTitle"]);
     form.find(":input").val("");
     $("#editRow").modal();
 }
 
 function updateRow(id) {
-    $("#modalTitle").html(i18n["editTitle"]);
+   $("#modalTitle").html(i18n["editTitle"]);
     $.get(context.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
             if(key !== "password") {
@@ -82,6 +82,14 @@ function failNoty(jqXHR) {
         layout: "bottomRight"
     }).show();
 }
+/*function failNoty(jqXHR) {
+    closeNoty();
+    failedNote = new Noty({
+        text: "<span class='fa fa-lg fa-exclamation-circle'></span> &nbsp;Error status: " + jqXHR.status + (jqXHR.responseJSON ? "<br>" + jqXHR.responseJSON : ""),
+        type: "error",
+        layout: "bottomRight"
+    }).show();
+}*/
 
 function renderEditBtn(data, type, row) {
     if (type === "display") {

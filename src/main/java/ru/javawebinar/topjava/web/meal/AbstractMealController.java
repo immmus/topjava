@@ -55,6 +55,12 @@ public abstract class AbstractMealController {
         log.info("update {} for user {}", meal, userId);
         service.update(meal, userId);
     }
+    public void update(MealTo mealTo, int id){
+        int userId = SecurityUtil.authUserId();
+        assureIdConsistent(mealTo, id);
+        log.info("update {} for user {}", mealTo, userId);
+        service.update(mealTo, userId);
+    }
 
     /**
      * <ol>Filter separately

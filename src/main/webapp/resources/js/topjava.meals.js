@@ -1,25 +1,36 @@
+const mealsAjaxUrl = "ajax/profile/meals/";
 function updateFilteredTable() {
     $.ajax({
         type: "GET",
-        url: "ajax/profile/meals/filter",
+        url:  mealsAjaxUrl + "filter",
         data: $("#filter").serialize()
     }).done(updateTableByData);
 }
 
 function clearFilter() {
     $("#filter")[0].reset();
-    $.get("ajax/profile/meals/", updateTableByData);
+    $.get(mealsAjaxUrl, updateTableByData);
 }
 
 $(function () {
     makeEditable({
-        ajaxUrl: "ajax/profile/meals/",
+        ajaxUrl: mealsAjaxUrl,
         datatableApi: $("#datatable").DataTable({
+            "ajax": {
+                "url": mealsAjaxUrl,
+                "dataSrc": ""
+            },
             "paging": false,
             "info": true,
             "columns": [
                 {
-                    "data": "dateTime"
+                    "data": function (data, type) {
+                        if(type === 'display'){
+                            const date = new Date(data.dateTime);
+                            return date.toLocaleDateString() + " " + date.toLocaleTimeString()
+                        }
+                        return data
+                    }
                 },
                 {
                     "data": "description"
@@ -28,11 +39,13 @@ $(function () {
                     "data": "calories"
                 },
                 {
-                    "defaultContent": "Edit",
+                    "defaultContent": "",
+                    "render": renderEditBtn,
                     "orderable": false
                 },
                 {
-                    "defaultContent": "Delete",
+                    "defaultContent": "",
+                    "render": renderDeleteBtn,
                     "orderable": false
                 }
             ],
@@ -41,7 +54,14 @@ $(function () {
                     0,
                     "desc"
                 ]
-            ]
+            ],
+            "createdRow": function (row, data, dataIndex) {
+                if (data.excess) {
+                    $(row).attr("data-mealExcess", true);
+                } else {
+                    $(row).attr("data-mealExcess", false);
+                }
+            }
         }),
         updateTable: updateFilteredTable
     });
