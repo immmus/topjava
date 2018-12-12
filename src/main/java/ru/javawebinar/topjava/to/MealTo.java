@@ -13,7 +13,6 @@ import java.util.Objects;
 public class MealTo extends BaseTo {
 
     @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateTime;
 
     @NotBlank
@@ -62,7 +61,7 @@ public class MealTo extends BaseTo {
     }
 
     public void setCalories(Integer calories) {
-        if (StringUtils.isEmpty(calories)){
+        if (StringUtils.isEmpty(calories)) {
             this.calories = 0;
         }
         this.calories = calories;

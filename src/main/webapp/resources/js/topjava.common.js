@@ -12,16 +12,18 @@ function makeEditable(ctx) {
 }
 
 function add() {
-     $("#modalTitle").html(i18n["addTitle"]);
+    $("#modalTitle").html(i18n["addTitle"]);
+   // $('.datetimepicker').datetimepicker();
     form.find(":input").val("");
     $("#editRow").modal();
 }
 
 function updateRow(id) {
-   $("#modalTitle").html(i18n["editTitle"]);
+    $("#modalTitle").html(i18n["editTitle"]);
+   // $('.datetimepicker').datetimepicker();
     $.get(context.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            if(key !== "password") {
+            if (key !== "password") {
                 form.find("input[name='" + key + "']").val(value);
             }
         });
@@ -82,6 +84,7 @@ function failNoty(jqXHR) {
         layout: "bottomRight"
     }).show();
 }
+
 /*function failNoty(jqXHR) {
     closeNoty();
     failedNote = new Noty({
