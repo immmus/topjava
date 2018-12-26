@@ -24,6 +24,7 @@ import java.util.List;
  * https://stackoverflow.com/questions/22349120/spring-profiles-on-method-level/43645463#43645463
  * */
 //@Repository
+
 public abstract class OldJdbcMealRepositoryImpl<T> implements MealRepository {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);

@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,6 +10,9 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.util.ValidationUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -21,7 +25,6 @@ public class GlobalControllerExceptionHandler {
         Throwable rootCause = ValidationUtil.getRootCause(e);
         mav.addObject("exception", rootCause);
         mav.addObject("message", ValidationUtil.getMessage(rootCause));
-
         // Interceptor is not invoked, put userTo
         AuthorizedUser authorizedUser = SecurityUtil.safeGet();
         if (authorizedUser != null) {

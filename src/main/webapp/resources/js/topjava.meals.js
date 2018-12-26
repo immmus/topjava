@@ -64,6 +64,7 @@ $(function () {
         updateTable: updateFilteredTable
     });
 
+    $.datetimepicker.setLocale(loc);
 //  http://xdsoft.net/jqplugins/datetimepicker/
     const startDate = $('#startDate');
     const endDate = $('#endDate');

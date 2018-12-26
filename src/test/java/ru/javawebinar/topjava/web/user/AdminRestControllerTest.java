@@ -3,6 +3,8 @@ package ru.javawebinar.topjava.web.user;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -109,6 +111,29 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
         assertMatch(returned, expected);
         assertMatch(userService.getAll(), ADMIN, expected, USER);
+    }
+
+    /* В тесте не установили имя и т.к. в User поле password помечено аннотацией @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+     * и мы при мапинге jsona не используем метод jsonWithPassword, поле password тоже не читается, поэтому при
+     * записи нового юзера не проходит валидацию*/
+    @Test
+    void testNoValidCreate() throws Exception {
+        User expected = new User(null, "", "new@gmail.com", "newPass", 2300, Role.ROLE_USER, Role.ROLE_ADMIN);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JsonUtil.writeValue(expected)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void testDuplicateEmailCreate() throws Exception {
+        User expected = new User(null, "Name", "admin@gmail.com", "newPass", 2300, Role.ROLE_USER, Role.ROLE_ADMIN);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(expected, "newPass")))
+                .andExpect(status().isConflict());
     }
 
     @Test

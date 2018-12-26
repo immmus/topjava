@@ -5,11 +5,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
+import static java.time.LocalDateTime.of;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -94,6 +100,25 @@ class MealRestControllerTest extends AbstractControllerTest {
 
         assertMatch(returned, created);
         assertMatch(service.getAll(ADMIN_ID), ADMIN_MEAL2, created, ADMIN_MEAL1);
+    }
+    @Test
+    void testCreateNoValid() throws Exception {
+        Meal noValidCreated = getNoValidCreated();
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(noValidCreated))
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+    @Test
+    @Transactional(propagation = Propagation.NEVER) // ????????
+    void testCreateDuplicateDate() throws Exception {
+        Meal noValidCreated = new  Meal(null, LocalDateTime.of(2015, Month.JUNE, 1, 21, 0), "Созданный ужин", 300);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(noValidCreated))
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isConflict());
     }
 
     @Test
